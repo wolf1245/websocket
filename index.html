@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>webcoket</title>
+</head>
+<body>
+  <div style='width:500px; height:300px; overflow:auto; border:1px solid #CCC'>
+		
+	</div>
+	<textarea name="message" cols="30" rows="10"></textarea>
+	<button>Send</button>
+
+	<script>
+		const ws = new WebSocket('ws://127.0.0.1:5000');
+
+		let button = document.querySelector('button');
+		let ta = document.querySelector('textarea');
+		let div = document.querySelector('div');
+
+		// then
+		button.addEventListener('click', function() {
+			let obj = {text: ta.value};
+			let jn = JSON.stringify(obj);
+			ws.send(jn);
+		});
+
+		// response
+		ws.onmessage = function(response) {
+	
+			let obj  = JSON.parse(response.data)
+
+			div.innerHTML += `<div>${obj.text}</div>`
+
+		};
+	</script>
+</body>
+</html>
